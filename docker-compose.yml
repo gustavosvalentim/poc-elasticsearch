@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+        environment:
+            discovery.type: "single-node"
+        ports:
+            - "9200:9200"
+            - "9300:9300"
+
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.7.0
+        depends_on:
+            - elasticsearch
+        links:
+            - "elasticsearch:es"
+        environment:
+            ELASTICSEARCH_URL: http://es:9200
+        ports:
+            - "5601:5601"
+
+    apm:
+        image: docker.elastic.co/apm/apm-server:7.7.1
+        depends_on:
+            - elasticsearch
+        links:
+            - "elasticsearch:es"
+        environment:
+            output.elasticsearch.hosts: "es:9200"
+        ports:
+            - "8200:8200"
