@@ -1,15 +1,13 @@
 using Elastic.Apm.NetCoreAll;
 using PocElasticSearch.API.Infrastructure.Logging;
-using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-SerilogExtensions.ConfigureLogging(builder.Configuration);
+builder.Configuration.AddEnvironmentVariables();
 
-builder.Host.UseSerilog(Log.Logger);
+builder.Host.UseMySerilog(builder.Configuration);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

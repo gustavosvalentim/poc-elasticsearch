@@ -19,9 +19,9 @@ namespace PocElasticSearch.API.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get([FromQuery] int? maxDays)
+        public IEnumerable<WeatherForecast> Get([FromQuery] int? numberOfDays)
         {
-            var forecasts = Enumerable.Range(0, maxDays ?? 5).Select(index => new WeatherForecast
+            var forecasts = Enumerable.Range(0, numberOfDays ?? 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
@@ -29,7 +29,7 @@ namespace PocElasticSearch.API.Controllers
             })
             .ToArray();
 
-            _logger.LogInformation("Get forecasts - {Forecasts}", forecasts.Select(f => f.Date));
+            _logger.LogInformation("Get forecasts - {Forecasts} ({ForecastsCount})", forecasts.Select(f => f.Date), numberOfDays);
 
             return forecasts;
         }
